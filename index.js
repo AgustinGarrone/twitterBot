@@ -29,13 +29,13 @@ function tweetToDto(tweet) {
           };
 
         T.post('statuses/update', res, function(err, data, response) {
-            console.log(data)
+            if (err) console.log(err)
     })  
     }}  
     
     function loopGetTweets() {
       console.log("ejecutando loopget");
-      T.get('search/tweets', { q: '#nft since:2022-07-11', count: 300 },async function(err, data, response) {
+      T.get('search/tweets', { q: '#nft since:2022-07-11', count: 500 },async function(err, data, response) {
         allTweet = data.statuses.map(tweet => tweetToDto(tweet))
         console.log("ejecutando");
       })
