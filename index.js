@@ -39,7 +39,7 @@ function tweetToDto(tweet) {
         allTweet = data.statuses.map(tweet => tweetToDto(tweet))
         console.log("ejecutando");
       })
-      setInterval(() => {
+      setTimeout(() => {
         loopGetTweets()
       }, 1800000);
     }
