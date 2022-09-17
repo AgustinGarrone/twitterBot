@@ -21,7 +21,7 @@ function tweetToDto(tweet) {
 
     if (tweet.in_reply_to_screen_name != null) {
         var res = {
-            status: '⚡ Hey, bro check @cryptocupqatar first crypto tournament based in qatar world cup 2022!⚡ #nft #playtoearn #worldcup2022 '  ,
+            status: '⚡ Hey, bro check @cryptocupqatar first crypto tournament based in qatar world cup 2022!⚡ #playtoearn #worldcup2022 #p2e'  ,
             in_reply_to_status_id: '' + tweet.id_str ,
             in_reply_to_user_id:'' + tweet.user.id,
             in_reply_to_screen_name:''+ tweet.user.screen_name,
