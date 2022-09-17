@@ -59,11 +59,11 @@ var allTweet2;
     
     function loopGetTweets() {
       console.log("ejecutando loopget");
-      T1.get('search/tweets', { q: '#nft since:2022-07-11', count: 500 },async function(err, data, response) {
+      T1.get('search/tweets', { q: '#NFTCommuntiy since:2022-07-11', count: 500 },async function(err, data, response) {
         allTweet1 = data.statuses.map(tweet => tweetFromAccountOne(tweet))
       })
 
-      T2.get('search/tweets', { q: '#playtoearn since:2022-07-11', count: 500 },async function(err, data, response) {
+      T2.get('search/tweets', { q: '##NFTGame since:2022-07-11', count: 500 },async function(err, data, response) {
         allTweet2 = data.statuses.map(tweet => tweetFromAccountTwo(tweet))
       })
 
