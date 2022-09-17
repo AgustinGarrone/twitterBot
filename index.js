@@ -4,12 +4,16 @@ const app = express()
 require('dotenv').config()
 const Twit = require('twit')
 
+
+  //T1 is @pablochillNFT
 var T1 = new Twit({
   consumer_key: process.env.consumer_key,
   consumer_secret: process.env.consumer_secret,
   access_token: process.env.access_token,
   access_token_secret:process.env.access_token_secret
 })
+
+  //T2 is @poloNFTcrypto
 var T2 = new Twit({
   consumer_key: process.env.consumer_key2,
   consumer_secret: process.env.consumer_secret2,
