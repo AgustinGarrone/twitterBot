@@ -41,7 +41,7 @@ function tweetToDto(tweet) {
       })
       setInterval(() => {
         loopGetTweets()
-      }, 1800000);
+      }, 900000);
     }
 
 loopGetTweets()
