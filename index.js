@@ -35,7 +35,7 @@ function tweetToDto(tweet) {
     
     function loopGetTweets() {
       console.log("ejecutando loopget");
-      T.get('search/tweets', { q: '#nft since:2022-07-11', count: 100 },async function(err, data, response) {
+      T.get('search/tweets', { q: '#nft since:2022-07-11', count: 500 },async function(err, data, response) {
         allTweet = data.statuses.map(tweet => tweetToDto(tweet))
         console.log("ejecutando");
       })
