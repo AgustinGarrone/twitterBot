@@ -26,7 +26,7 @@ var T2 = new Twit({
 var allTweet1;
 var allTweet2;
   //hashtags para filtrar tweets
-var hashtags = ["#CryptoNews" , "#bscgem" , "#nft","#FWC", "#NFTCommuntiy" , "#NFTcommunity" , "#sorare"]
+var hashtags = ["#CryptoNews" , "crypto new" , "crypto gem","#bscgem" , "#nft","#playtoearn", "#NFTCommuntiy" , "#fwc" , "#sorare"]
 var palabras = ["nft", "play to earn proyect" ,"play to earn", "crypto ", "fifa crypto" ,"p2e", "fwc token"]
   //emojis distintos para evitar status==
 var emojis = ["✔" , "✨" , "🏆" ,"⚽" , "🎉" , "🙌" , "🎁" ,"⚡"]
@@ -99,16 +99,16 @@ var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
     
     function loopGetTweets() {
       console.log("ejecutando loopget");
-      T1.get('search/tweets', { q: `${palabras[counter]}`, count: 60 },async function(err, data, response) {
+      T1.get('search/tweets', { q: `${hashtags[counter]}`, count: 60 },async function(err, data, response) {
         allTweet1 = data.statuses.map(tweet => tweetFromAccountOne(tweet))
       })
 
-       T2.get('search/tweets', { q: `${palabras[counter+1]} `, count: 60 },async function(err, data, response) {
+       T2.get('search/tweets', { q: `${hashtags[counter+1]} `, count: 60 },async function(err, data, response) {
         allTweet2 = data.statuses.map(tweet => tweetFromAccountTwo(tweet))
       }) 
       counter = counter++
         //cuando counter es mayor que el limite del array se resetea
-      if (counter + 1 >=palabras.length) {
+      if (counter + 1 >=hashtags.length) {
         counter=0;
       }
       setTimeout(() => {
