@@ -99,11 +99,11 @@ var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
     
     function loopGetTweets() {
       console.log("ejecutando loopget");
-      T1.get('search/tweets', { q: `${hashtags[counter]}`, count: 60 },async function(err, data, response) {
+      T1.get('search/tweets', { q: `${hashtags[counter]}`, count: 150 },async function(err, data, response) {
         allTweet1 = data.statuses.map(tweet => tweetFromAccountOne(tweet))
       })
 
-       T2.get('search/tweets', { q: `${hashtags[counter+1]} `, count: 60 },async function(err, data, response) {
+       T2.get('search/tweets', { q: `${hashtags[counter+1]} `, count: 150 },async function(err, data, response) {
         allTweet2 = data.statuses.map(tweet => tweetFromAccountTwo(tweet))
       }) 
       counter = counter++
@@ -123,6 +123,6 @@ var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
   }
-  console.log(getRandomInt(0,6))
+  
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("server running"));
