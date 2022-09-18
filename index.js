@@ -26,7 +26,7 @@ var T2 = new Twit({
 var allTweet1;
 var allTweet2;
   //hashtags para filtrar tweets
-var hashtags = ["#CryptoNews" , "crypto new" , "crypto gem","#bscgem" , "#nft","#playtoearn", "#NFTCommuntiy" , "#fwc" , "#sorare"]
+var hashtags = ["#CryptoNews" ,"#bscgem" , "#nft","#playtoearn", "#NFTCommuntiy" , "#fwc" , "#sorare"]
 var palabras = ["nft", "play to earn proyect" ,"play to earn", "crypto ", "fifa crypto" ,"p2e", "fwc token"]
   //emojis distintos para evitar status==
 var emojis = ["✔" , "✨" , "🏆" ,"⚽" , "🎉" , "🙌" , "🎁" ,"⚡"]
