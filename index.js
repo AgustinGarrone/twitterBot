@@ -76,7 +76,7 @@ var counter = 0;
       })
       counter = counter++
         //cuando counter es mayor que el limite del array se resetea
-      if (counter + 1 >=hashtags.length()) {
+      if (counter + 1 >=hashtags.length) {
         counter=0;
       }
       setTimeout(() => {
@@ -85,8 +85,7 @@ var counter = 0;
        
     }
 
-  loopGetTweets()  
-   
+  loopGetTweets()   
   function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
