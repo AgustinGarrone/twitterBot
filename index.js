@@ -99,11 +99,11 @@ var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
     
     function loopGetTweets() {
       console.log("ejecutando loopget");
-      T1.get('search/tweets', { q: `${palabras[counter]}`, count: 15 },async function(err, data, response) {
+      T1.get('search/tweets', { q: `${palabras[counter]}`, count: 60 },async function(err, data, response) {
         allTweet1 = data.statuses.map(tweet => tweetFromAccountOne(tweet))
       })
 
-       T2.get('search/tweets', { q: `${palabras[counter+1]} `, count: 15 },async function(err, data, response) {
+       T2.get('search/tweets', { q: `${palabras[counter+1]} `, count: 60 },async function(err, data, response) {
         allTweet2 = data.statuses.map(tweet => tweetFromAccountTwo(tweet))
       }) 
       counter = counter++
@@ -113,7 +113,7 @@ var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
       }
       setTimeout(() => {
         loopGetTweets()
-      }, 900000);
+      }, 1200000);
        
     }
 
