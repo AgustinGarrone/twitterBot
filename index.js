@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 require('dotenv').config()
+fs = require('fs');
 const Twit = require('twit')
 
 
@@ -26,57 +27,88 @@ var allTweet1;
 var allTweet2;
   //hashtags para filtrar tweets
 var hashtags = ["#CryptoNews" , "#bscgem" , "#nft","#FWC", "#NFTCommuntiy" , "#NFTcommunity" , "#sorare"]
+var palabras = ["nft", "play to earn proyect" ,"play to earn", "crypto ", "fifa crypto" ,"p2e", "fwc token"]
   //emojis distintos para evitar status==
 var emojis = ["✔" , "✨" , "🏆" ,"⚽" , "🎉" , "🙌" , "🎁" ,"⚡"]
   //counter para recorrer arreglos 
 var counter = 0;
 
-
+var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
 
     function tweetFromAccountOne(tweet) {
       if (tweet.in_reply_to_screen_name != null) {
-          let res = {
-              status: `${emojis[getRandomInt(0,7)]} Hey, bro check @cryptocupqatar first crypto tournament based in qatar world cup 2022!${emojis[getRandomInt(0,7)]}  #worldcup2022 #p2e` ,
-              in_reply_to_status_id: '' + tweet.id_str ,
-              in_reply_to_user_id:'' + tweet.user.id,
-              in_reply_to_screen_name:''+ tweet.user.screen_name,
-              auto_populate_reply_metadata: true
-            };
-          T1.post('statuses/update', res, function(err, data, response) {
-              if (err) console.log(err)
-              console.log("twiteando cuenta1")
-          })  
-        }
+
+          T1.post('media/upload', { media_data: b64content }, function (err, data, response) {
+            var mediaIdStr = data.media_id_string
+            var altText = "crypto tournament based in qatar world cup 2022."
+            var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+           
+            T1.post('media/metadata/create', meta_params, function (err, data, response) {
+              if (!err) {
+                // now we can reference the media and post a tweet (media will attach to the tweet)
+                var params = { 
+                  status: `${emojis[getRandomInt(0,7)]} Hey, bro check @cryptocupqatar first crypto tournament based in qatar world cup 2022!${emojis[getRandomInt(0,7)]}  #worldcup2022 #p2e`,
+                   media_ids: [mediaIdStr] ,
+                   in_reply_to_status_id: '' + tweet.id_str ,
+                   in_reply_to_user_id:'' + tweet.user.id,
+                   in_reply_to_screen_name:''+ tweet.user.screen_name,
+                   auto_populate_reply_metadata: true
+                }
+           
+                T1.post('statuses/update', params, function (err, data, response) {
+                  if (err) {
+                    console.log(err)
+                  }
+                })
+              }
+            })
+          })
+      }
+
     }   
 
     function tweetFromAccountTwo(tweet) {
       if (tweet.in_reply_to_screen_name != null) {
-          let res = {
-              status: `${emojis[getRandomInt(0,7)]} Hey! check @cryptocupqatar first crypto tournament based in qatar world cup 2022!${emojis[getRandomInt(0,7)]} www.cryptocupqatar.io` ,
-              in_reply_to_status_id: '' + tweet.id_str ,
-              in_reply_to_user_id:'' + tweet.user.id,
-              in_reply_to_screen_name:''+ tweet.user.screen_name,
-              auto_populate_reply_metadata: true
-            };
-          T2.post('statuses/update', res, function(err, data, response) {
-              if (err) console.log(err)
-              console.log("twiteando cuenta2")
-          })  
+        T2.post('media/upload', { media_data: b64content }, function (err, data, response) {
+          var mediaIdStr = data.media_id_string
+          var altText = "crypto tournament based in qatar world cup 2022."
+          var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+         
+          T2.post('media/metadata/create', meta_params, function (err, data, response) {
+            if (!err) {
+              // now we can reference the media and post a tweet (media will attach to the tweet)
+              var params = { 
+                status: `${emojis[getRandomInt(0,7)]} Hey, bro check @cryptocupqatar first crypto tournament based in qatar world cup 2022!${emojis[getRandomInt(0,7)]}  #worldcup2022 #p2e`,
+                 media_ids: [mediaIdStr] ,
+                 in_reply_to_status_id: '' + tweet.id_str ,
+                 in_reply_to_user_id:'' + tweet.user.id,
+                 in_reply_to_screen_name:''+ tweet.user.screen_name,
+                 auto_populate_reply_metadata: true
+              }
+         
+              T2.post('statuses/update', params, function (err, data, response) {
+                if (err) {
+                  console.log(err)
+                }
+              })
+            }
+          })
+        })
         }
     }   
     
     function loopGetTweets() {
       console.log("ejecutando loopget");
-      T1.get('search/tweets', { q: `${hashtags[counter]}`, count: 500 },async function(err, data, response) {
+      T1.get('search/tweets', { q: `${palabras[counter]}`, count: 15 },async function(err, data, response) {
         allTweet1 = data.statuses.map(tweet => tweetFromAccountOne(tweet))
       })
 
-      T2.get('search/tweets', { q: `${hashtags[counter+1]} `, count: 500 },async function(err, data, response) {
+       T2.get('search/tweets', { q: `${palabras[counter+1]} `, count: 15 },async function(err, data, response) {
         allTweet2 = data.statuses.map(tweet => tweetFromAccountTwo(tweet))
-      })
+      }) 
       counter = counter++
         //cuando counter es mayor que el limite del array se resetea
-      if (counter + 1 >=hashtags.length) {
+      if (counter + 1 >=palabras.length) {
         counter=0;
       }
       setTimeout(() => {
