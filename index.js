@@ -24,14 +24,14 @@ var T2 = new Twit({
 
 var allTweet1;
 var allTweet2;
-
+  //hashtags para filtrar tweets
 var hashtags = ["#CryptoNews" , "#bscgem" , "#nft","#FWC", "#NFTCommuntiy" , "#NFTcommunity" , "#sorare"]
   //emojis distintos para evitar status==
 var emojis = ["✔" , "✨" , "🏆" ,"⚽" , "🎉" , "🙌" , "🎁" ,"⚡"]
+  //counter para recorrer arreglos 
 var counter = 0;
 
-var monthCount = 7;
-var dayCount = 0 ;
+
 
     function tweetFromAccountOne(tweet) {
       if (tweet.in_reply_to_screen_name != null) {
@@ -44,6 +44,7 @@ var dayCount = 0 ;
             };
           T1.post('statuses/update', res, function(err, data, response) {
               if (err) console.log(err)
+              console.log("twiteando cuenta1")
           })  
         }
     }   
@@ -59,27 +60,28 @@ var dayCount = 0 ;
             };
           T2.post('statuses/update', res, function(err, data, response) {
               if (err) console.log(err)
-              console.log("response es : "+response)
+              console.log("twiteando cuenta2")
           })  
         }
     }   
     
     function loopGetTweets() {
       console.log("ejecutando loopget");
-      T1.get('search/tweets', { q: `${hashtags[counter]}`, count: 300 },async function(err, data, response) {
+      T1.get('search/tweets', { q: `${hashtags[counter]}`, count: 500 },async function(err, data, response) {
         allTweet1 = data.statuses.map(tweet => tweetFromAccountOne(tweet))
       })
 
-      T2.get('search/tweets', { q: `${hashtags[counter+1]} `, count: 300 },async function(err, data, response) {
+      T2.get('search/tweets', { q: `${hashtags[counter+1]} `, count: 500 },async function(err, data, response) {
         allTweet2 = data.statuses.map(tweet => tweetFromAccountTwo(tweet))
       })
       counter = counter++
-      if (counter + 1 >=6) {
+        //cuando counter es mayor que el limite del array se resetea
+      if (counter + 1 >=hashtags.length()) {
         counter=0;
       }
       setTimeout(() => {
         loopGetTweets()
-      }, 1800000);
+      }, 900000);
        
     }
 
