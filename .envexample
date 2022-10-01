@@ -1,0 +1,12 @@
+consumer_key="your consumer key"
+consumer_secret="your consumer key secret"
+access_token="your access token"
+access_token_secret=" your access token secret"
+
+consumer_key2="your consumer key secret of account 2"
+consumer_secret2="your consumer key secret of account 2"
+access_token2="your access token of account 2"
+access_token_secret2="your access token secret of account 2 "
+
+
+//All these parameters can be found by creating your development application at https://developer.twitter.com/

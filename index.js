@@ -1,21 +1,22 @@
-
-const express = require('express')
-const app = express()
 require('dotenv').config()
 fs = require('fs');
+const express = require('express')
 const Twit = require('twit')
 
 
-  //T1 is @pablochillNFT
-var T1 = new Twit({
+
+const app = express()
+
+  //T1 is twitter Account number One
+let T1 = new Twit({
   consumer_key: process.env.consumer_key,
   consumer_secret: process.env.consumer_secret,
   access_token: process.env.access_token,
   access_token_secret:process.env.access_token_secret
 })
 
-  //T2 is @poloNFTcrypto
-var T2 = new Twit({
+  //T2 is twitter Account number two
+let T2 = new Twit({
   consumer_key: process.env.consumer_key2,
   consumer_secret: process.env.consumer_secret2,
   access_token: process.env.access_token2,
@@ -23,31 +24,32 @@ var T2 = new Twit({
 })
 
 
-var allTweet1;
-var allTweet2;
-  //hashtags para filtrar tweets
-var hashtags = ["#CryptoNews" ,"#bscgem" , "#nft","#playtoearn", "#NFTCommuntiy" , "#fwc" , "#sorare"]
-var palabras = ["nft", "play to earn proyect" ,"play to earn", "crypto ", "fifa crypto" ,"p2e", "fwc token"]
-  //emojis distintos para evitar status==
-var emojis = ["✔" , "✨" , "🏆" ,"⚽" , "🎉" , "🙌" , "🎁" ,"⚡"]
-  //counter para recorrer arreglos 
-var counter = 0;
+let allTweet1;
+let allTweet2;
+  //hashtags you want to filter with
+let hashtags = ["#CryptoNews" , "crypto new" , "crypto gem","#bscgem" , "#nft","#playtoearn", "#NFTCommuntiy" , "#fwc" , "#sorare"]
+let palabras = ["nft", "play to earn proyect" ,"play to earn", "crypto ", "fifa crypto" ,"p2e", "fwc token"]
 
-var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
+  //different emojis to put in the tweet and avoid spam errors
+let emojis = ["✔" , "✨" , "🏆" ,"⚽" , "🎉" , "🙌" , "🎁" ,"⚡"]
+  //counter to traverse arrays
+let counter = 0;
+  //image you want the bots tweet
+let b64content = fs.readFileSync('./YOURIMAGEPATH.JPG', { encoding: 'base64' })
 
     function tweetFromAccountOne(tweet) {
       if (tweet.in_reply_to_screen_name != null) {
 
           T1.post('media/upload', { media_data: b64content }, function (err, data, response) {
-            var mediaIdStr = data.media_id_string
-            var altText = "crypto tournament based in qatar world cup 2022."
-            var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+            let mediaIdStr = data.media_id_string
+            let altText = "YOUR IMAGE DESCRIPTION"
+            let meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
            
             T1.post('media/metadata/create', meta_params, function (err, data, response) {
               if (!err) {
                 // now we can reference the media and post a tweet (media will attach to the tweet)
-                var params = { 
-                  status: `${emojis[getRandomInt(0,7)]} Hey, bro check @cryptocupqatar first crypto tournament based in qatar world cup 2022!${emojis[getRandomInt(0,7)]}  #worldcup2022 #p2e`,
+                let params = { 
+                  status: `${emojis[getRandomInt(0,7)]} WRITE HERE WHAT YOU WANT THE BOT TO TWITE ${emojis[getRandomInt(0,7)]}  #YOURBOTHASHTAG #YOURBOTHASHTAG`,
                    media_ids: [mediaIdStr] ,
                    in_reply_to_status_id: '' + tweet.id_str ,
                    in_reply_to_user_id:'' + tweet.user.id,
@@ -61,6 +63,7 @@ var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
                   }
                 })
               }
+            console.log("twitted");
             })
           })
       }
@@ -70,15 +73,15 @@ var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
     function tweetFromAccountTwo(tweet) {
       if (tweet.in_reply_to_screen_name != null) {
         T2.post('media/upload', { media_data: b64content }, function (err, data, response) {
-          var mediaIdStr = data.media_id_string
-          var altText = "crypto tournament based in qatar world cup 2022."
-          var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+          let mediaIdStr = data.media_id_string
+          let altText = "YOUR IMAGE DESCRIPTION"
+          let meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
          
           T2.post('media/metadata/create', meta_params, function (err, data, response) {
             if (!err) {
               // now we can reference the media and post a tweet (media will attach to the tweet)
-              var params = { 
-                status: `${emojis[getRandomInt(0,7)]} Hey, bro check @cryptocupqatar first crypto tournament based in qatar world cup 2022!${emojis[getRandomInt(0,7)]}  #worldcup2022 #p2e`,
+              let params = { 
+                status: `${emojis[getRandomInt(0,7)]} WRITE HERE WHAT YOU WANT THE BOT TO TWITE ${emojis[getRandomInt(0,7)]}  #YOURBOTHASHTAG #YOURBOTHASHTAG`,
                  media_ids: [mediaIdStr] ,
                  in_reply_to_status_id: '' + tweet.id_str ,
                  in_reply_to_user_id:'' + tweet.user.id,
@@ -97,27 +100,35 @@ var b64content = fs.readFileSync('./Captura.JPG', { encoding: 'base64' })
         }
     }   
     
-    function loopGetTweets() {
-      console.log("ejecutando loopget");
-      T1.get('search/tweets', { q: `${hashtags[counter]}`, count: 150 },async function(err, data, response) {
-        allTweet1 = data.statuses.map(tweet => tweetFromAccountOne(tweet))
-      })
+    function loopGetTweets(accounts) {
 
-       T2.get('search/tweets', { q: `${hashtags[counter+1]} `, count: 150 },async function(err, data, response) {
-        allTweet2 = data.statuses.map(tweet => tweetFromAccountTwo(tweet))
-      }) 
+      if (accounts==1) {
+        T1.get('search/tweets', { q: `${hashtags[counter]}`, count: 100 },async function(err, data, response) {
+          allTweet1 = data.statuses.map(tweet => tweetFromAccountOne(tweet))
+        })
+      }
+      if (accounts==2) {
+        T1.get('search/tweets', { q: `${hashtags[counter]}`, count: 60 },async function(err, data, response) {
+          allTweet1 = data.statuses.map(tweet => tweetFromAccountOne(tweet))
+        })
+        T2.get('search/tweets', { q: `${hashtags[counter+1]} `, count: 60 },async function(err, data, response) {
+          allTweet2 = data.statuses.map(tweet => tweetFromAccountTwo(tweet))
+        }) 
+      }
       counter = counter++
-        //cuando counter es mayor que el limite del array se resetea
+        //when counter is greater than the limit of the array it is reset
       if (counter + 1 >=hashtags.length) {
         counter=0;
       }
       setTimeout(() => {
-        loopGetTweets()
+        loopGetTweets(1)
       }, 1200000);
        
     }
 
-  loopGetTweets()   
+  loopGetTweets(1)   
+
+  //FUNCTION TO GET RANDOM NUMBERS FROM THE ARRAY OF EMOJIS
   function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
